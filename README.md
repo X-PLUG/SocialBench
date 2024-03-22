@@ -1,6 +1,6 @@
 ![image](assets/example.png)
 
-# SocialBench: Sociality Evaluation of Role-Playing Conversational Agents
+# RoleInteract: Evaluating the Social Interaction of Role-Playing Agents
 
 <div align="center">
 Hongzhan Chen<sup>1</sup>, Hehong Chen<sup>2</sup>, Ming Yan<sup>2*</sup>, Wenshen Xu<sup>2</sup>, Xing Gao<sup>2</sup>, Weizhou shen<sup>1</sup>, Xiaojun Quan<sup>1*</sup>, Chenliang Li<sup>2</sup>, Ji Zhang<sup>2</sup>, Fei Huang<sup>2</sup>, Jingren Zhou<sup>2</sup>
