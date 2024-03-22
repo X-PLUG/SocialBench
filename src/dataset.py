@@ -5,7 +5,7 @@ import re
 
 from torch.utils.data import Dataset
 
-from src.utils import json_load
+from src.utils import json_load, format_name
 
 PROMPT_EN = """
 ==Profile==
@@ -79,6 +79,44 @@ Based on the provided role Profile and Conversations, you must produce a reply a
 Assistant: 
 """
 
+PROMPT_GROUP_EN = """
+==Profiles==
+{role_profiles}
+
+==Conversations==
+{conversations}
+
+You are playing the role of {role_name}, you need to embody the social preference of {role_name}.
+Based on the provided role profile and conversations, please choose the best option (A, B, C, or D) as your response:
+{options}
+
+Your selection (You can only output A, B, C or D, and no other characters.):
+"""
+
+
+PROMPT_GROUP_ZH = """
+==角色描述==
+{role_profiles}
+
+==对话历史==
+{conversations}
+
+你要扮演{role_name}角色，你在聊天中要具备该角色对应的社交偏好。
+请根据所给的{role_name}角色描述和对话历史，从下面四个选项（A. B. C.和D.）中选择最优的选项作为你的回复：
+{options}
+
+你的选择（你只能输出A，B，C或D，不要输出其他单词。）：
+"""
+
+
+def make_group_profiles(profiles: dict, skip_role_name: str = None, shorten: bool = True, n: int = 10) -> str:
+    results = []
+    for role_name, role_profile in profiles.items():
+        if skip_role_name is not None and format_name(role_name) == format_name(skip_role_name):
+            continue
+        results.append("\n".join(re.sub(r'\n+', '\n', role_profile).split("\n")[:n]) if shorten else role_profile)
+    return "\n\n\n".join(results)
+
 
 def format_question(dialogue, choices=None):
     conversations = ""
@@ -117,14 +155,15 @@ def format_instruction(data):
         })
     elif category in ["Individual-EP-HumorSarcasmDetect", "Individual-EP-SituationUnderstanding"]:
         prompt = f"{outputs.dialogue}\n{outputs.options}"
-    else:
-        assert category in [
-            'Group-SAP-Positive',
-            'Group-SAP-Negative',
-            'Group-SAP-Neutral',
-            'Individual-SA-RoleStyle',
-            'Individual-SA-RoleKnowledge'
-        ]
+    elif category in ['Group-SAP-Positive', 'Group-SAP-Negative', 'Group-SAP-Neutral']:
+        PROMPT = PROMPT_GROUP_EN if lang.lower() == "en" else PROMPT_GROUP_ZH
+        prompt = PROMPT.format_map({
+            "role_profiles": make_group_profiles(data['meta']['profile']),
+            "conversations": outputs.dialogue,
+            "role_name": data['meta']['name'],
+            "options": outputs.options
+        })
+    elif category in ['Individual-SA-RoleStyle', 'Individual-SA-RoleKnowledge']:
         PROMPT = PROMPT_EN if lang.lower() == "en" else PROMPT_ZH
         prompt = PROMPT.format_map({
             "role_profile": data['meta']['profile'][data['meta']['name']],
@@ -132,6 +171,8 @@ def format_instruction(data):
             "role_name": data['meta']['name'],
             "options": outputs.options
         })
+    else:
+        raise ValueError(category)
     return prompt
 
 

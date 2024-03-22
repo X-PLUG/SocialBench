@@ -96,7 +96,7 @@ def characterglm_call_v2(meta: dict, prompt: str, model: str = "charglm-3"):
 
 
 def characterglm_call(meta: dict, prompt: list, model: str = "charglm-3"):
-    response = zhipuai.model_api.invoke(
+    response = zhipuai.model_api.invoke(  # TODO
         model=model,
         meta=meta,
         prompt=prompt

@@ -16,6 +16,12 @@ chenhzh59@mail2.sysu.edu.cn, ym119608@alibaba-inc.com, quanxj3@mail.sysu.edu.cn
 </div>
 
 
+<div align="center">
+    <a href="https://arxiv.org/pdf/2403.13679.pdf"><img src="assets/Paper-Arxiv-orange.svg" ></a>
+    <a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FX-PLUG%2FMulti-LLM-Agent&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false"/></a>
+</div>
+
+
 ## Introduction
 
 Large language models (LLMs) have advanced the development of role-playing agents that mimic diverse characters and human behaviors.
@@ -113,6 +119,11 @@ We utilize zero-shot prompting for all experiments, and only the chat version of
 | GLM-3-Turbo | 77.85 | 84.62 | 35.58 | 53.05 | 74.64 | 71.68 | 84.41 | 67.47 | 54.55 | 67.09 |
 | Minimax-abab5.5s-chat | 36.09 | 42.11 | 28.15 | 47.97 | 29.55 | 19.30 | 44.59 | 41.04 | 22.45 | 34.58 |
 | Minimax-abab6-chat | 82.92 | 87.45 | 35.90 | 51.38 | 83.60 | 80.26 | 89.12 | 79.55 | 74.65 | 73.87 | 
+
+## TODO
+
+ - [ ] Add evaluation scripts for open-source LLMs.
+
 ## Citation
 ```
 @misc{chen2024roleinteract,

@@ -3,8 +3,8 @@ import os
 
 from tqdm import tqdm
 
-from src.baichuan_api import baichuan_turbo_call
-from src.characterglm_api import characterglm_turbo_call
+from src.baichuan_api import baichuan_turbo_call, baichuan_npc_call, create_character_profile
+from src.characterglm_api import characterglm_turbo_call, characterglm_call_v2, create_meta
 from src.dataset import RoleInteractDataset, format_predict, compute_score
 from src.minimax_api import minimax_abab5_call, minimax_abab6_call
 from src.openai_api import chatgpt_call, gpt4_call
@@ -17,13 +17,22 @@ CALL_FN = {
     "gpt-3.5": chatgpt_call,
     "gpt-4": gpt4_call,
     "baichuan-2-turbo": baichuan_turbo_call,
-    # "baichuan-npc-turbo": baichuan_npc_call,
     "qwen-max": qwen_call,
-    # "charglm-3": characterglm_call_v2,
     "glm-3-turbo": characterglm_turbo_call,
     "minimax-abab5.5s-chat": minimax_abab5_call,
     "minimax-abab6-chat": minimax_abab6_call,
     "qwen-72b-chat": qwen_chat_call
+}
+
+
+CALL_FN_WITH_INFO = {
+    "baichuan-npc-turbo": baichuan_npc_call,
+    "charglm-3": characterglm_call_v2,
+}
+
+INFO_FN = {
+    "baichuan-npc-turbo": create_character_profile,
+    "charglm-3": create_meta,
 }
 
 
@@ -36,6 +45,30 @@ def compute_datalist_score(datalist):
             score += data['score']
     acc = score / (length + 1e-12)
     return acc
+
+
+def run_with_info(model: str, json_file: str, save_dir: str = '.'):
+    assert model in CALL_FN_WITH_INFO
+    os.makedirs(save_dir, exist_ok=True)
+    dataset = RoleInteractDataset(json_file)
+    save_name = os.path.split(json_file)[-1].replace(".json", "")
+    datalist = []
+    for data in tqdm(dataset):
+        label = json.loads(data['label'])
+        meta = json.loads(data['meta'])
+        predict = CALL_FN_WITH_INFO[model](
+            INFO_FN[model](meta['name'], meta['profile']['name']),
+            data['instruction']
+        )
+        print(label, "|", format_predict(predict), "|", predict)
+        if predict is None:
+            continue
+        data['predict'] = predict
+        data['score'] = compute_score(predict, label, meta)
+        datalist.append(data)
+
+    acc = compute_datalist_score(datalist)
+    json_dump(datalist, os.path.join(save_dir, f'{save_name}_{model}_{round(acc, 5)}.json'))
 
 
 def run(model: str, json_file: str, save_dir: str = '.'):
