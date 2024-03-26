@@ -122,6 +122,7 @@ We utilize zero-shot prompting for all experiments, and only the chat version of
 
 ## TODO
 
+ - [ ] Publish code and data.
  - [ ] Add evaluation scripts for open-source LLMs.
 
 ## Citation
