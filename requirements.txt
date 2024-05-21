@@ -1,0 +1,7 @@
+requests
+fire
+tqdm
+numpy
+zhipuai
+torch
+dashscope
