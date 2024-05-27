@@ -120,11 +120,6 @@ We utilize zero-shot prompting for all experiments, and only the chat version of
 | Minimax-abab5.5s-chat | 36.09 | 42.11 | 28.15 | 47.97 | 29.55 | 19.30 | 44.59 | 41.04 | 22.45 | 34.58 |
 | Minimax-abab6-chat | 82.92 | 87.45 | 35.90 | 51.38 | 83.60 | 80.26 | 89.12 | 79.55 | 74.65 | 73.87 | 
 
-## TODO
-
- - [ ] Publish code and data.
- - [ ] Add evaluation scripts for open-source LLMs.
-
 ## Citation
 ```
 @misc{chen2024roleinteract,
