@@ -194,7 +194,7 @@ def format_prompt(data):
     return prompt
 
 
-class RoleInteractDataset(Dataset):
+class SocialBenchDataset(Dataset):
     def __init__(self, f: str, limit: int = None):
         self.datalist = json_load(f)
         if limit is not None:
@@ -248,7 +248,7 @@ if __name__ == '__main__':
         """ A model API takes a string type parameter and return a string type result. """
         raise NotImplemented
 
-    dataset = RoleInteractDataset("data/self_awareness.json")
+    dataset = SocialBenchDataset("data/self_awareness.json")
     # dataset = RoleInteractDataset("data/emotional_perception.json")
     # dataset = RoleInteractDataset("data/conversation_memory.json")
     # dataset = RoleInteractDataset("data/social_preference.json")

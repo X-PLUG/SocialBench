@@ -1,6 +1,6 @@
 ![image](assets/example.png)
 
-# RoleInteract: Evaluating the Social Interaction of Role-Playing Agents
+# SocialBench: Sociality Evaluation of Role-Playing Conversational Agents
 
 <div align="center">
 Hongzhan Chen<sup>1</sup>, Hehong Chen<sup>2</sup>, Ming Yan<sup>2*</sup>, Wenshen Xu<sup>2</sup>, Xing Gao<sup>2</sup>, Weizhou shen<sup>1</sup>, Xiaojun Quan<sup>1*</sup>, Chenliang Li<sup>2</sup>, Ji Zhang<sup>2</sup>, Fei Huang<sup>2</sup>, Jingren Zhou<sup>2</sup>
@@ -22,17 +22,22 @@ chenhzh59@mail2.sysu.edu.cn, ym119608@alibaba-inc.com, quanxj3@mail.sysu.edu.cn
 </div>
 
 
+## News
+
+- [2024.08.12] SocialBench has been accepted to the ACL 2024 Findings.
+
+
 ## Introduction
 
 Large language models (LLMs) have advanced the development of role-playing agents that mimic diverse characters and human behaviors.
 While prior research has predominantly focused on enhancing the conversational capability, role-specific knowledge, and stylistic attributes of these agents, there has been a noticeable gap in assessing their social intelligence.
 
-In this work, we introduce **RoleInteract**, the first benchmark designed to evaluate the _sociality_ of role-playing agents, at both individual and group levels of social interactions.
-Some phenomenons are found ... as we dive into the society of role-playing conversational agents.
+In this work, we introduce **SocialBench**, the first benchmark designed to evaluate the _sociality_ of role-playing agents, at both individual and group levels of social interactions.
+As we dive into the society of role-playing conversational agents, we find that agents excelling in individual level does not imply their proficiency in group level. Moreover, the behavior of individuals may _drift_ as a result of the influence exerted by other agents within the group
 
 ## Evaluation Dimensions
 
-The evaluation dimensions of **RoleInteract** include:
+The evaluation dimensions of **SocialBench** include:
 - Individual Level
     - Self-Awareness on Role Description
         - Self-Awareness on Role Style (SA Style)
@@ -50,23 +55,23 @@ The evaluation dimensions of **RoleInteract** include:
         - Negative Social Preference (SP Neg.)
         
 
-## Statistics of RoleInteract
+## Statistics of SocialBench
 
 ### Personality Traits
 
-From the collection of [638 personality descriptors](https://ideonomy.mit.edu/essays/traits.html) created by Gunkel (1998), we select and extend diverse personality traits for **RoleInteract**'s role profile construction.
+From the collection of [638 personality descriptors](https://ideonomy.mit.edu/essays/traits.html) created by Gunkel (1998), we select and extend diverse personality traits for **SocialBench**'s role profile construction.
 
 ![image](assets/personality-traits.png)
 
 ### Dialogue Tokens
 
-There are a total of >500 roles, comprising >6,000 questions and >30,800 utterances in **RoleInteract**. We show the distribution of dialogue tokens as below:
+There are a total of >500 roles, comprising >6,000 questions and >30,800 utterances in **SocialBench**. We show the distribution of dialogue tokens as below:
 
 ![image](assets/statistic-tokens.png)
 
 ## Data Structure
 
-**RoleInteract** is stored in JSON format, with the entire file being a list where each element is a dictionary. Each dictionary may contain the following fields:
+**SocialBench** is stored in JSON format, with the entire file being a list where each element is a dictionary. Each dictionary may contain the following fields:
 - _dialogue_ (List[dict]): A record of dialogue history for roles, where each element is a dictionary. The key 'from' represents the speaking role, while 'value' represents the utterance.
 - _instruction_ (str): Instruction for the current task.
 - _choices_ (dict): The keys correspond to options (A, B, C, ...), and the values correspond to the content of each option.
@@ -80,14 +85,7 @@ There are a total of >500 roles, comprising >6,000 questions and >30,800 utteran
 
 ## Evaluation Scripts
 
-To evaluate closed-source LLMs, run following:
-
-```shell script
-python evaluate_closed_source.py \
---model gpt-3.5 \
---json_file data/social_preference.json \
---save_dir log
-```
+We have provided an example of SocialBench usage in `dataset.py`.
 
 ## Experimental Results
 
@@ -122,8 +120,8 @@ We utilize zero-shot prompting for all experiments, and only the chat version of
 
 ## Citation
 ```
-@misc{chen2024roleinteract,
-      title={RoleInteract: Evaluating the Social Interaction of Role-Playing Agents}, 
+@misc{chen2024socialbench,
+      title={SocialBench: Sociality Evaluation of Role-Playing Conversational Agents}, 
       author={Hongzhan Chen and Hehong Chen and Ming Yan and Wenshen Xu and Xing Gao and Weizhou Shen and Xiaojun Quan and Chenliang Li and Ji Zhang and Fei Huang and Jingren Zhou},
       year={2024},
       eprint={2403.13679},
